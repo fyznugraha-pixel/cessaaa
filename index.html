@@ -186,23 +186,7 @@
     z-index: 2;
   }
 
-  /* ── MUSIC BTN ── */
-  #music-btn {
-    position: fixed;
-    bottom: 1.5rem; right: 1.5rem;
-    width: 46px; height: 46px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.8);
-    backdrop-filter: blur(8px);
-    border: 2px solid #ffb3ce;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem;
-    cursor: none;
-    z-index: 1000;
-    box-shadow: 0 4px 16px rgba(255,133,179,.3);
-    transition: transform .2s, box-shadow .2s;
-  }
-  #music-btn:hover { transform: scale(1.12); box-shadow: 0 6px 22px rgba(255,133,179,.45); }
+
 
   /* ── SECTION 2 — PHOTOS ── */
   #photos {
@@ -628,9 +612,9 @@
 
 <!-- music -->
 <audio id="bg-music" loop>
-  <source src="song.m4a" type="audio/mp4">
+  <source src="song.mp3" type="audio/mp4">
 </audio>
-<div id="music-btn" title="mute / unmute">🔇</div>
+
 
 <!-- ── LOADING ── -->
 <div id="loading">
@@ -806,38 +790,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ══ MUSIC ══
 const audio = document.getElementById('bg-music');
-const musicBtn = document.getElementById('music-btn');
-let muted = true;
 audio.volume = 0.18;
-audio.muted = true;
 
 function tryAutoplay() {
-  audio.muted = false;
-  audio.play().then(() => {
-    muted = false;
-    musicBtn.textContent = '🎵';
-  }).catch(() => {
-    // browser blocked autoplay, wait for first user interaction
-    const unlock = () => {
-      audio.muted = false;
-      audio.play().then(() => {
-        muted = false;
-        musicBtn.textContent = '🎵';
-      }).catch(() => {});
-      document.removeEventListener('click', unlock);
-      document.removeEventListener('touchstart', unlock);
-    };
-    document.addEventListener('click', unlock);
-    document.addEventListener('touchstart', unlock);
-  });
+  audio.play().catch(() => {});
 }
 
-musicBtn.addEventListener('click', () => {
-  muted = !muted;
-  audio.muted = muted;
-  if (!muted) { audio.play(); }
-  musicBtn.textContent = muted ? '🔇' : '🎵';
-});
+
 
 // ══ HERO BTN → SCROLL ══
 document.getElementById('hero-btn').addEventListener('click', () => {
